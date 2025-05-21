@@ -1,5 +1,5 @@
 ### Coding along with Architecture Patterns with Python
-The default branch, `main`, was created from the `start` tag.
+The default branch, `main`, was created from the upstream `start` tag.
 
 ### Stuff from upstream:
 >#### Running the tests
