@@ -1,14 +1,17 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date
-from typing import Optional, List, Set
+from typing import Optional, List
 
 
-@dataclass(frozen=True)
+@dataclass()
 class OrderLine:
     order_id: str
     sku: str
     quantity: int
+
+    def __hash__(self) -> int:
+        return hash((self.order_id, self.sku, self.quantity))
 
 
 class Batch:
