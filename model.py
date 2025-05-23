@@ -4,7 +4,7 @@ from datetime import date
 from typing import Optional, List
 
 
-@dataclass()
+@dataclass(eq=False)
 class OrderLine:
     order_id: str
     sku: str
@@ -12,6 +12,15 @@ class OrderLine:
 
     def __hash__(self) -> int:
         return hash((self.order_id, self.sku, self.quantity))
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, OrderLine):
+            return NotImplemented
+        return (
+            self.order_id == other.order_id
+            and self.sku == other.sku
+            and self.quantity == other.quantity
+        )
 
 
 class Batch:
