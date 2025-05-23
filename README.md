@@ -8,7 +8,7 @@ The default branch, `main`, was created from the upstream [`start`](https://gith
 
 - [x] 1. [Domain Modeling](https://github.com/evokateur/python-architecture/pull/1)
 
-- [ ] 2. [Repository Pattern](https://github.com/evokateur/python-architecture/pull/2)
+- [x] 2. [Repository Pattern](https://github.com/evokateur/python-architecture/pull/2)
 
 - [ ] 3. *On Coupling and Abstractions*
 
