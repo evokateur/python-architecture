@@ -1,5 +1,6 @@
-from sqlalchemy import Table, MetaData, Column, Integer, String, ForeignKey
-from sqlalchemy.orm import properties, registry, relationship
+from sqlalchemy import Table, MetaData, Column, Integer, String, Date, ForeignKey
+from sqlalchemy.orm import registry, relationship
+
 import model
 
 metadata = MetaData()
@@ -18,16 +19,18 @@ batches = Table(
     "batches",
     metadata,
     Column("id", Integer, primary_key=True, autoincrement=True),
-    Column("reference", String(255), nullable=False),
-    Column("order_id", String(255), ForeignKey("order_lines.order_id")),
+    Column("reference", String(255)),
+    Column("sku", String(255)),
+    Column("_purchased_quantity", Integer, nullable=False),
+    Column("eta", Date, nullable=True),
 )
 
 allocations = Table(
     "allocations",
     metadata,
     Column("id", Integer, primary_key=True, autoincrement=True),
-    Column("order_line_id", ForeignKey("order_lines.id"), nullable=False),
-    Column("batch_id", ForeignKey("batches.id"), nullable=False),
+    Column("order_line_id", ForeignKey("order_lines.id")),
+    Column("batch_id", ForeignKey("batches.id")),
 )
 
 
