@@ -55,10 +55,7 @@ git fetch upstream
 
 #### Finding the upstream branches for a chapter
 ```sh
-$ git branch -r -l 'upstream/chapter_07*'
-  upstream/chapter_07_aggregate
-  upstream/chapter_07_aggregate_exercise
-  upstream/chapter_07_noinheritance
+git branch -r -l 'upstream/chapter_07*'
 ```
 
 ## Stuff from the upstream [README.md](https://github.com/cosmicpython/code/blob/master/README.md)
