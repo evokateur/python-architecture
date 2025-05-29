@@ -34,6 +34,33 @@ The default branch, `main`, was created from the upstream [`start`](https://gith
 
 - [ ] 13. Dependency Injection
 
+## Getting Started
+
+### Clone and set up the project
+
+```sh
+git clone git@github.com:evokateur/python-architecture.git
+cd python-architecture
+python3.13 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Add upstream remote (for reference)
+
+```sh
+git remote add upstream git@github.com:cosmicpython/code.git
+git fetch upstream
+```
+
+#### Finding the upstream branches for a chapter
+```sh
+$ git branch -r -l 'upstream/chapter_07*'
+  upstream/chapter_07_aggregate
+  upstream/chapter_07_aggregate_exercise
+  upstream/chapter_07_noinheritance
+```
+
 ## Stuff from the upstream [README.md](https://github.com/cosmicpython/code/blob/master/README.md)
 
 >### Running the tests
