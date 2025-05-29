@@ -1,6 +1,7 @@
 # Code Along: Architecture Patterns with Python
 
-The default branch, `main`, was created from the upstream [`start`](https://github.com/cosmicpython/code/releases/tag/start) tag.
+The default branch, `main`, was created from the upstream
+[`start`](https://github.com/cosmicpython/code/releases/tag/start) tag.
 
 ## Chapters Completed
 
@@ -54,6 +55,7 @@ git fetch upstream
 ```
 
 #### Finding the upstream branches for a chapter
+
 ```sh
 git branch -r -l 'upstream/chapter_07*'
 ```
