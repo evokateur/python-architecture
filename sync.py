@@ -6,7 +6,7 @@ from pathlib import Path
 BLOCKSIZE = 65536
 
 
-class RealFileSystem:
+class FileSystemWrapper:
     def copy(self, source, destination):
         shutil.copyfile(source, destination)
 
@@ -15,24 +15,6 @@ class RealFileSystem:
 
     def delete(self, path):
         os.remove(path)
-
-
-class FakeFileSystem:
-    def __init__(self):
-        self._list = []
-
-    def copy(self, source, destination):
-        self._list.append(("COPY", source, destination))
-
-    def move(self, source, destination):
-        self._list.append(("MOVE", source, destination))
-
-    def delete(self, path):
-        self._list.append(("DELETE", path))
-
-    @property
-    def list(self):
-        return self._list
 
 
 def hash_file(file_path):
@@ -87,7 +69,7 @@ def synchronize_directories(
     )
 
     if file_system is None:
-        file_system = RealFileSystem()
+        file_system = FileSystemWrapper()
 
     for action, *paths in actions:
         if action == "COPY":

@@ -1,9 +1,23 @@
 from pathlib import Path
-from sync import (
-    synchronize_directories,
-    determine_actions,
-    FakeFileSystem,
-)
+from sync import synchronize_directories, determine_actions
+
+
+class FakeFileSystem:
+    def __init__(self):
+        self._list = []
+
+    def copy(self, source, destination):
+        self._list.append(("COPY", source, destination))
+
+    def move(self, source, destination):
+        self._list.append(("MOVE", source, destination))
+
+    def delete(self, path):
+        self._list.append(("DELETE", path))
+
+    @property
+    def list(self):
+        return self._list
 
 
 class TestE2E:
@@ -61,4 +75,3 @@ def test_when_a_file_has_been_renamed_in_the_source():
     assert list(actions) == [
         ("MOVE", Path("/destination/file1.txt"), Path("/destination/file_1.txt"))
     ]
-
