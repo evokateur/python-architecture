@@ -11,7 +11,7 @@ The default branch, `main`, was created from the upstream
 
 - [x] 2. [Repository Pattern](https://github.com/evokateur/python-architecture/pull/2)
 
-- [ ] 3. *On Coupling and Abstractions*
+- [ ] 3. [*On Coupling and Abstractions*](https://github.com/evokateur/python-architecture/pull/3)
 
 - [ ] 4. API and Service Layer
 
