@@ -13,7 +13,7 @@ The default branch, `main`, was created from the upstream
 
 - [x] 3. [*On Coupling and Abstractions*](https://github.com/evokateur/python-architecture/pull/3/files)
 
-- [ ] 4. API and Service Layer
+- [ ] 4. [API and Service Layer](https://github.com/evokateur/python-architecture/pull/4/files)
 
 - [ ] 5. *TDD in High and Low Gear*
 
