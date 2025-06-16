@@ -41,23 +41,11 @@ class TestE2E:
             ("COPY", Path("/source/my-file"), Path("/destination/my-file"))
         ]
 
-    @staticmethod
-    def test_when_a_file_has_been_renamed_in_the_source_fake_file_system():
-        source = {"sha1": "my-file-renamed"}
-        destination = {"sha1": "my-file"}
-        file_system = FakeFileSystem()
-        read_files_and_hashes_func = {
-            "/source": source,
-            "/destination": destination,
-        }.pop
-
-        synchronize_directories(
-            "/source", "/destination", read_files_and_hashes_func, file_system
-        )
-
-        assert file_system.list == [
-            ("MOVE", Path("/destination/my-file"), Path("/destination/my-file-renamed"))
-        ]
+    '''
+    to reproduce copilot crash (or not)
+    - let copilot autocomplete `@staticmethod` below
+    - then let copilot autocomplete the *entire* function starting with `def test_when_a_file_has_been_renamed_in_the_source_fake_file_system`
+    '''
 
     @staticmethod
     def test_when_a_file_exists_in_the_source_but_not_in_the_destination():
