@@ -20,3 +20,6 @@ class SqlAlchemyRepository(AbstractRepository):
 
     def get(self, reference: str) -> model.Batch:
         return self.session.query(model.Batch).filter_by(reference=reference).one()
+
+    def list(self):
+        return self.session.query(model.Batch).all()
