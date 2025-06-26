@@ -17,3 +17,8 @@ def session(in_memory_db):
     start_mappers()
     yield sessionmaker(bind=in_memory_db)()
     clear_mappers()
+
+
+@pytest.fixture
+def restart_api():
+    return
