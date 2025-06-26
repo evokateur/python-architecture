@@ -1,4 +1,5 @@
 pytest
 sqlalchemy
 requests
+flask
 # uvicorn
