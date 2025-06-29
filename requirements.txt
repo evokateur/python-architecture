@@ -2,4 +2,5 @@ pytest
 sqlalchemy
 requests
 flask
+psycopg2-binary
 # uvicorn
