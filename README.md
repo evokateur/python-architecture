@@ -42,7 +42,8 @@ The default branch, `main`, was created from the upstream
 ```sh
 git clone git@github.com:evokateur/python-architecture.git
 cd python-architecture
-python3.13 -m venv .venv
+pyenv shell 3.12
+python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
