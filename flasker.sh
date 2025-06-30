@@ -8,7 +8,7 @@ case "$1" in
 run)
     PID=$(cat $PIDFILE)
     if [ -n "$PID" ]; then
-        echo "Flask server already running with PID $PID"
+        echo "PID file found. Is Flask running with PID $PID?"
         exit 0
     fi
     echo "Running Flask server..."
