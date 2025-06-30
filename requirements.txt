@@ -3,4 +3,5 @@ sqlalchemy
 requests
 flask
 psycopg2-binary
+dotenv
 # uvicorn
