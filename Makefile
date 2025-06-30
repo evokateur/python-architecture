@@ -12,6 +12,12 @@ down:
 logs:
 	docker-compose logs app | tail -100
 
+flask:
+	./flasker.sh run
+
+unflask:
+	./flasker.sh stop
+
 test:
 	pytest --tb=short
 
