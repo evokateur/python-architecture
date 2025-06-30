@@ -19,7 +19,7 @@ unflask:
 	./flasker.sh stop
 
 test:
-	pytest --tb=short
+	pytest -vv -s --tb=short
 
 watch-tests:
 	ls *.py | entr pytest --tb=short
