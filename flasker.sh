@@ -6,7 +6,7 @@ PIDFILE=".flask.pid"
 
 case "$1" in
 run)
-    PID=$(cat $PIDFILE)
+    [ -f "$PIDFILE" ] && PID=$(cat $PIDFILE)
     if [ -n "$PID" ]; then
         if ps -p "$PID" >/dev/null 2>&1; then
             echo "Flask is already running with PID $PID"
@@ -17,7 +17,7 @@ run)
         fi
     fi
     echo "Running Flask server..."
-    flask run >flask.log 2>&1 &
+    flask run --debug >flask.log 2>&1 &
     echo $! >"$PIDFILE"
     echo "Flask running with PID $(cat $PIDFILE)"
     ;;
