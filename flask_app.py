@@ -19,8 +19,10 @@ def allocate_endpoint():
     line = model.OrderLine(
         request.json["order_id"],
         request.json["sku"],
-        request.json["quantlty"],
+        request.json["quantity"],
     )
     batch_ref = model.allocate(line, batches)
+
+    session.commit()
 
     return jsonify({"batch_ref": batch_ref}), 201
