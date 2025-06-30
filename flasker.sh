@@ -8,8 +8,13 @@ case "$1" in
 run)
     PID=$(cat $PIDFILE)
     if [ -n "$PID" ]; then
-        echo "PID file found. Is Flask running with PID $PID?"
-        exit 0
+        if ps -p "$PID" >/dev/null 2>&1; then
+            echo "Flask is already running with PID $PID"
+            exit 0
+        else
+            echo "Stale PID file found. Removing it."
+            rm "$PIDFILE"
+        fi
     fi
     echo "Running Flask server..."
     flask run >flask.log 2>&1 &
@@ -20,8 +25,7 @@ stop)
     if [ -f "$PIDFILE" ]; then
         PID=$(cat "$PIDFILE")
         echo "Stopping Flask server with PID $PID"
-        kill $PID
-        rm "$PIDFILE"
+        kill $PID && rm "$PIDFILE"
     else
         echo "No PID file found. Is Flask running?"
     fi
