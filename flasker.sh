@@ -17,7 +17,7 @@ run)
         fi
     fi
     echo "Running Flask server..."
-    flask run --debug >flask.log 2>&1 &
+    flask run >flask.log 2>&1 &
     echo $! >"$PIDFILE"
     echo "Flask running with PID $(cat $PIDFILE)"
     ;;
