@@ -18,8 +18,8 @@ flask:
 unflask:
 	./flasker.sh stop
 
-test: unflask flask
-	pytest -vv -s --tb=short
+test:
+	pytest --tb=short
 
 watch-tests:
 	ls *.py | entr pytest --tb=short
