@@ -48,10 +48,10 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Add upstream remote (for reference)
+### Add [semi-upstream](https://github.com/evokateur/python-architecture-code) remote for reference
 
 ```sh
-git remote add upstream git@github.com:cosmicpython/code.git
+git remote add upstream git@github.com:evokateur/python-architecture-code.git
 git fetch upstream
 ```
 
