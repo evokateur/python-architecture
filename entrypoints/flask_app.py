@@ -30,7 +30,7 @@ def post_batch_endpoint():
 
     return jsonify({"message": "Batch created successfully"}), 201
 
-@app.route("/allocate", methods=["POST"])
+@app.route("/order-line", methods=["POST"])
 def allocate_endpoint():
     session = get_session()
     repo = repository.SqlAlchemyRepository(session)
@@ -47,7 +47,7 @@ def allocate_endpoint():
 
     return jsonify({"batch_ref": batch_ref}), 201
 
-@app.route("/deallocate", methods=["POST"])
+@app.route("/order-line", methods=["DELETE"])
 def deallocate_endpoint():
     session = get_session()
     repo = repository.SqlAlchemyRepository(session)

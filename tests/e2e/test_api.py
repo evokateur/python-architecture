@@ -36,7 +36,7 @@ def test_happy_path_returns_201_and_allocated_batch(add_stock):
     )
     data = {"order_id": random_order_id(), "sku": sku, "quantity": 3}
     url = config.get_api_url()
-    r = requests.post(f"{url}/allocate", json=data)
+    r = requests.post(f"{url}/order-line", json=data)
     assert r.status_code == 201
     assert r.json()["batch_ref"] == early_batch
 
@@ -46,7 +46,7 @@ def test_unhappy_path_returns_400_and_error_message(add_stock):
     unknown_sku, order_id = random_sku(), random_order_id()
     data = {"order_id": order_id, "sku": unknown_sku, "quantity": 20}
     url = config.get_api_url()
-    r = requests.post(f"{url}/allocate", json=data)
+    r = requests.post(f"{url}/order-line", json=data)
     assert r.status_code == 400
     assert r.json()["message"] == f"Invalid sku {unknown_sku}"
 
@@ -73,19 +73,19 @@ def test_deallocate():
 
     # fully allocate
     r = requests.post(
-        f"{url}/allocate", json={"order_id": order1, "sku": sku, "quantity": 100}
+        f"{url}/order-line", json={"order_id": order1, "sku": sku, "quantity": 100}
     )
     assert r.json()["batch_ref"] == batch
 
     # cannot allocate second order
     r = requests.post(
-        f"{url}/allocate", json={"order_id": order2, "sku": sku, "quantity": 100}
+        f"{url}/order-line", json={"order_id": order2, "sku": sku, "quantity": 100}
     )
     assert r.status_code == 400
 
     # deallocate
-    r = requests.post(
-        f"{url}/deallocate",
+    r = requests.delete(
+        f"{url}/order-line",
         json={
             "order_id": order1,
             "sku": sku,
@@ -96,7 +96,7 @@ def test_deallocate():
 
     # now we can allocate second order
     r = requests.post(
-        f"{url}/allocate", json={"order_id": order2, "sku": sku, "quantity": 100}
+        f"{url}/order-line", json={"order_id": order2, "sku": sku, "quantity": 100}
     )
     assert r.ok
     assert r.json()["batch_ref"] == batch
