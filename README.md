@@ -48,7 +48,9 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Add [semi-upstream](https://github.com/evokateur/python-architecture-code) remote for reference
+### Add [semi-upstream](https://github.com/evokateur/python-architecture-code)† remote for reference
+
+† a fork I will test the chapter branches in, but not code along in
 
 ```sh
 git remote add upstream git@github.com:evokateur/python-architecture-code.git
