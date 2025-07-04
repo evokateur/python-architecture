@@ -1,8 +1,12 @@
 from domain import model
-import datetime
+from datetime import date, timedelta
 import pytest
 from service_layer import services
 from adapters.repository import FakeRepository
+
+today = date.today()
+tomorrow = today + timedelta(days=1)
+later = today + timedelta(days=10)
 
 
 class FakeSession:
@@ -38,6 +42,7 @@ def test_commits():
 
     assert session.committed is True
 
+
 def test_deallocate_decrements_available_quantity():
     repo, session = FakeRepository([]), FakeSession()
     services.add_batch("b1", "BLUE-PLINTH", 100, None, repo, session)
@@ -70,15 +75,23 @@ def test_trying_to_deallocate_unallocated_batch():
     services.add_batch("b1", "PRIVATE_RESERVE", 100, None, repo, session)
 
     line = model.OrderLine("o1", "PRIVATE_RESERVE", 10)
-    with pytest.raises(model.DeallocationError, match="OrderLine not allocated: order_id=o1, sku=PRIVATE_RESERVE"):
+    with pytest.raises(
+        model.DeallocationError,
+        match="OrderLine not allocated: order_id=o1, sku=PRIVATE_RESERVE",
+    ):
         services.deallocate(line, repo, session)
 
-def test_prefers_current_stock_batches_to_shipments():
-    in_stock_batch = model.Batch("in-stock-batch", "RETRO-CLOCK", 100, None)
-    tomorrow = datetime.date.today() + datetime.timedelta(days=1)
-    shipment_batch = model.Batch("shipment-batch", "RETRO-CLOCK", 100, tomorrow)
-    line = model.OrderLine("oref", "RETRO-CLOCK", 10)
-    model.allocate(line, [in_stock_batch, shipment_batch])
+
+def test_prefers_warehouse_batches_to_shipments():
+    in_stock_batch = model.Batch("batch-001", "SMALL-TABLE", 100, None)
+    shipment_batch = model.Batch("batch-002", "SMALL-TABLE", 100, tomorrow)
+
+    repository = FakeRepository([shipment_batch, in_stock_batch])
+    session = FakeSession()
+
+    order_line = model.OrderLine("order-123", "SMALL-TABLE", 10)
+
+    services.allocate(order_line, repository, session)
 
     assert in_stock_batch.available_quantity == 90
     assert shipment_batch.available_quantity == 100
