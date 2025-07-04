@@ -1,4 +1,5 @@
 from domain import model
+import datetime
 import pytest
 from service_layer import services
 from adapters.repository import FakeRepository
@@ -71,3 +72,13 @@ def test_trying_to_deallocate_unallocated_batch():
     line = model.OrderLine("o1", "PRIVATE_RESERVE", 10)
     with pytest.raises(model.DeallocationError, match="OrderLine not allocated: order_id=o1, sku=PRIVATE_RESERVE"):
         services.deallocate(line, repo, session)
+
+def test_prefers_current_stock_batches_to_shipments():
+    in_stock_batch = model.Batch("in-stock-batch", "RETRO-CLOCK", 100, None)
+    tomorrow = datetime.date.today() + datetime.timedelta(days=1)
+    shipment_batch = model.Batch("shipment-batch", "RETRO-CLOCK", 100, tomorrow)
+    line = model.OrderLine("oref", "RETRO-CLOCK", 10)
+    model.allocate(line, [in_stock_batch, shipment_batch])
+
+    assert in_stock_batch.available_quantity == 90
+    assert shipment_batch.available_quantity == 100
