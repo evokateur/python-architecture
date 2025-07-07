@@ -28,7 +28,7 @@ def post_batch_endpoint():
 
     services.add_batch(reference, sku, quantity, eta, repo, session)
 
-    return jsonify({"message": "Batch created successfully"}), 201
+    return "OK", 201
 
 
 @app.route("/allocations", methods=["POST"])
