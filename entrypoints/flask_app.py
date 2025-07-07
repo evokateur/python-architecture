@@ -3,7 +3,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 import config
-from domain import model
 from adapters import orm
 from adapters import repository
 from service_layer import services
@@ -36,15 +35,16 @@ def post_batch_endpoint():
 def allocate_endpoint():
     session = get_session()
     repo = repository.SqlAlchemyRepository(session)
-    line = model.OrderLine(
+
+    order_id, sku, quantity = (
         request.json["order_id"],
         request.json["sku"],
         request.json["quantity"],
     )
 
     try:
-        batch_ref = services.allocate(line, repo, session)
-    except (model.OutOfStock, services.InvalidSku) as e:
+        batch_ref = services.allocate(order_id, sku, quantity, repo, session)
+    except (services.OutOfStock, services.InvalidSku) as e:
         return jsonify({"message": str(e)}), 400
 
     return jsonify({"batch_ref": batch_ref}), 201
@@ -55,15 +55,15 @@ def deallocate_endpoint():
     session = get_session()
     repo = repository.SqlAlchemyRepository(session)
 
-    line = model.OrderLine(
+    order_id, sku, quantity = (
         request.json["order_id"],
         request.json["sku"],
         request.json["quantity"],
     )
 
     try:
-        batch_ref = services.deallocate(line, repo, session)
-    except model.DeallocationError as e:
+        batch_ref = services.deallocate(order_id, sku, quantity, repo, session)
+    except services.DeallocationError as e:
         return jsonify({"message": str(e)}), 400
 
     return jsonify({"batch_ref": batch_ref}), 201
