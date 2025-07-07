@@ -37,6 +37,13 @@ def test_commits():
     assert session.committed is True
 
 
+def test_add_batch():
+    repo, session = FakeRepository([]), FakeSession()
+    services.add_batch("b1", "BLUE-PLINTH", 100, None, repo, session)
+
+    assert session.committed is True
+
+
 def test_deallocate_decrements_available_quantity():
     repo, session = FakeRepository([]), FakeSession()
     services.add_batch("b1", "BLUE-PLINTH", 100, None, repo, session)
