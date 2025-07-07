@@ -16,7 +16,8 @@ app = Flask(__name__)
 def is_valid_sku(sku, batches):
     return sku in {b.sku for b in batches}
 
-@app.route("/batch", methods=["POST"])
+
+@app.route("/batches", methods=["POST"])
 def post_batch_endpoint():
     session = get_session()
     repo = repository.SqlAlchemyRepository(session)
@@ -30,7 +31,8 @@ def post_batch_endpoint():
 
     return jsonify({"message": "Batch created successfully"}), 201
 
-@app.route("/order-line", methods=["POST"])
+
+@app.route("/allocations", methods=["POST"])
 def allocate_endpoint():
     session = get_session()
     repo = repository.SqlAlchemyRepository(session)
@@ -47,7 +49,8 @@ def allocate_endpoint():
 
     return jsonify({"batch_ref": batch_ref}), 201
 
-@app.route("/order-line", methods=["DELETE"])
+
+@app.route("/allocations", methods=["DELETE"])
 def deallocate_endpoint():
     session = get_session()
     repo = repository.SqlAlchemyRepository(session)
@@ -60,7 +63,7 @@ def deallocate_endpoint():
 
     try:
         batch_ref = services.deallocate(line, repo, session)
-    except (model.DeallocationError) as e:
+    except model.DeallocationError as e:
         return jsonify({"message": str(e)}), 400
 
     return jsonify({"batch_ref": batch_ref}), 201
