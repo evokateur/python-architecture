@@ -1,11 +1,25 @@
 from datetime import date, timedelta
 import pytest
 from service_layer import services
-from adapters.repository import FakeRepository
+from adapters.repository import AbstractRepository
 
 today = date.today()
 tomorrow = today + timedelta(days=1)
 later = today + timedelta(days=10)
+
+
+class FakeRepository(AbstractRepository):
+    def __init__(self, batches):
+        self._batches = set(batches)
+
+    def add(self, batch):
+        self._batches.add(batch)
+
+    def get(self, reference: str):
+        return next(batch for batch in self._batches if batch.reference == reference)
+
+    def list(self):
+        return list(self._batches)
 
 
 class FakeSession:
