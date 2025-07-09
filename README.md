@@ -17,7 +17,7 @@ The default branch, `main`, was created from the upstream
 
 - [x] 5. [*TDD in High and Low Gear*](https://github.com/evokateur/python-architecture/pull/5/files)
 
-- [ ] 6. Unit of Work Pattern
+- [ ] 6. [Unit of Work Pattern](https://github.com/evokateur/python-architecture/pull/10/files)
 
 - [ ] 7. Aggregates and Consistency Boundaries
 
