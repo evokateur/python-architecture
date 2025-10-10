@@ -1,3 +1,4 @@
+from __future__ import annotations
 import abc
 import config
 from adapters import repository
@@ -7,6 +8,9 @@ from sqlalchemy.orm import sessionmaker
 
 class AbstractUnitOfWork(abc.ABC):
     batches: repository.AbstractRepository
+
+    def __enter__(self) -> AbstractUnitOfWork:
+        return self
 
     def __exit__(self, *args):
         self.rollback()
