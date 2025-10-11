@@ -1,5 +1,5 @@
-from domain import model
-from service_layer import unit_of_work
+from allocation.domain import model
+from allocation.service_layer import unit_of_work
 from sqlalchemy import text
 
 

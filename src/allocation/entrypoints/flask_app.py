@@ -2,10 +2,10 @@ from flask import Flask, request, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-import config
-from adapters import orm
-from adapters import repository
-from service_layer import services
+from allocation import config
+from allocation.adapters import orm
+from allocation.adapters import repository
+from allocation.service_layer import services
 
 orm.start_mappers()
 get_session = sessionmaker(bind=create_engine(config.get_postgres_uri()))

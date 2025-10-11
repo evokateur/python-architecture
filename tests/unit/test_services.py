@@ -1,7 +1,7 @@
 from datetime import date, timedelta
 import pytest
-from service_layer import services
-from adapters.repository import AbstractRepository
+from allocation.service_layer import services
+from allocation.adapters.repository import AbstractRepository
 
 today = date.today()
 tomorrow = today + timedelta(days=1)
