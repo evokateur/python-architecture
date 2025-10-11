@@ -66,4 +66,4 @@ def deallocate_endpoint():
     except services.DeallocationError as e:
         return jsonify({"message": str(e)}), 400
 
-    return jsonify({"batch_ref": batch_ref}), 201
+    return "OK", 200
