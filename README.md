@@ -69,12 +69,8 @@ git branch -r -l 'upstream/chapter_07*'
 >
 >```sh
 >make test
-># or, to run individual test types
->make unit
->make integration
->make e2e
+>...
 ># or, if you have a local virtualenv
->make up
 >pytest tests/unit
 >pytest tests/integration
 >pytest tests/e2e
