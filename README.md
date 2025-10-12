@@ -56,7 +56,11 @@ Create a `.env` file based on `.env.example`:
 cp .env.example .env
 ```
 
-Then edit `.env` and set your Railway PostgreSQL connection string:
+You have two options for running the application:
+
+#### Option 1: Lightweight setup (Railway PostgreSQL + local Flask)
+
+Edit `.env` and set your Railway PostgreSQL connection string:
 
 ```bash
 POSTGRES_URI=postgresql://user:password@host:port/database
@@ -66,6 +70,10 @@ Other important settings in `.env`:
 - `FLASK_RUN_PORT=5005` (default port for local Flask)
 - `FLASK_APP=entrypoints/flask_app.py`
 - `FLASK_ENV=development`
+
+#### Option 2: Docker-based setup
+
+Use the default values from `.env.example` (no changes needed). Docker Compose will run both PostgreSQL and the Flask app in containers.
 
 ### Add [semi-upstream](https://github.com/evokateur/python-architecture-code)† remote for reference
 
@@ -84,7 +92,7 @@ git branch -r -l 'upstream/chapter_07*'
 
 ## Development Workflow
 
-### Running the Flask API
+### Option 1: Lightweight setup (Railway + local Flask)
 
 Start the Flask development server (connects to Railway PostgreSQL):
 
@@ -102,6 +110,26 @@ Check Flask logs:
 
 ```sh
 cat flask.log
+```
+
+### Option 2: Docker-based setup
+
+Start all services (PostgreSQL + Flask in containers):
+
+```sh
+make up
+```
+
+Stop all services:
+
+```sh
+make down
+```
+
+View logs:
+
+```sh
+make logs
 ```
 
 ### Running tests
@@ -124,7 +152,3 @@ make watch-tests
 ```sh
 make black
 ```
-
-### Other useful commands
-
-See the `Makefile` for additional commands. Docker Compose is available (`make up`, `make down`) but not used for local development.
