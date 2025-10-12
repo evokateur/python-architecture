@@ -1,6 +1,8 @@
+import pytest
+from sqlalchemy import text
+
 from allocation.domain import model
 from allocation.service_layer import unit_of_work
-from sqlalchemy import text
 
 
 def insert_batch(session, ref, sku, qty, eta):
@@ -42,3 +44,28 @@ def test_uow_can_retrieve_a_batch_and_allocate_to_it(session_factory):
 
     batch_ref = get_allocated_batch_ref(session, "order1", "HIPSTER-WORKBENCH")
     assert batch_ref == "batch1"
+
+
+def test_rolls_back_uncommitted_work_by_default(session_factory):
+    uow = unit_of_work.SqlAlchemyUnitOfWork(session_factory)
+    with uow:
+        insert_batch(uow.session, "batch666", "SATANIC-PLINTH", 100, None)
+
+    new_session = session_factory()
+    rows = list(new_session.execute(text("SELECT * FROM batches")))
+    assert rows == []
+
+
+def test_rolls_back_on_error(session_factory):
+    class HandyException(Exception):
+        pass
+
+    with pytest.raises(HandyException):
+        uow = unit_of_work.SqlAlchemyUnitOfWork(session_factory)
+        with uow:
+            insert_batch(uow.session, "batch666", "SATANIC-PLINTH", 100, None)
+            raise HandyException()
+
+    new_session = session_factory()
+    rows = list(new_session.execute(text("SELECT * FROM batches")))
+    assert rows == []
