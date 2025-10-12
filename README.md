@@ -48,6 +48,25 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+### Configure environment
+
+Create a `.env` file based on `.env.example`:
+
+```sh
+cp .env.example .env
+```
+
+Then edit `.env` and set your Railway PostgreSQL connection string:
+
+```bash
+POSTGRES_URI=postgresql://user:password@host:port/database
+```
+
+Other important settings in `.env`:
+- `FLASK_RUN_PORT=5005` (default port for local Flask)
+- `FLASK_APP=entrypoints/flask_app.py`
+- `FLASK_ENV=development`
+
 ### Add [semi-upstream](https://github.com/evokateur/python-architecture-code)† remote for reference
 
 † a fork I will test the chapter branches in, but not code along in
@@ -63,19 +82,49 @@ git fetch upstream
 git branch -r -l 'upstream/chapter_07*'
 ```
 
-## Stuff from the upstream [README.md](https://github.com/cosmicpython/code/blob/master/README.md)
+## Development Workflow
 
->### Running the tests
->
->```sh
->make test
->...
-># or, if you have a local virtualenv
->pytest tests/unit
->pytest tests/integration
->pytest tests/e2e
->```
->
->### Makefile
->
->There are more useful commands in the makefile, have a look and try them out.
+### Running the Flask API
+
+Start the Flask development server (connects to Railway PostgreSQL):
+
+```sh
+make flask
+```
+
+Stop the Flask server:
+
+```sh
+make unflask
+```
+
+Check Flask logs:
+
+```sh
+cat flask.log
+```
+
+### Running tests
+
+```sh
+# Run all tests
+make test
+
+# Run specific test types
+pytest tests/unit --tb=short
+pytest tests/integration --tb=short
+pytest tests/e2e --tb=short
+
+# Watch tests during development
+make watch-tests
+```
+
+### Code formatting
+
+```sh
+make black
+```
+
+### Other useful commands
+
+See the `Makefile` for additional commands. Docker Compose is available (`make up`, `make down`) but not used for local development.
