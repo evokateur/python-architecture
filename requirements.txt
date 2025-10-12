@@ -1,3 +1,4 @@
+-e src/
 pytest
 sqlalchemy
 requests
