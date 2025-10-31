@@ -4,6 +4,23 @@ from datetime import date
 from typing import Optional, List
 
 
+class Product:
+    def __init__(self, sku: str, batches: List[Batch]):
+        self.sku = sku
+        self.batches = batches
+
+    def allocate(self, line: OrderLine) -> str:
+        try:
+            batch = next(
+                batch for batch in sorted(self.batches) if batch.can_allocate(line)
+            )
+            batch.allocate(line)
+            return batch.reference
+
+        except StopIteration:
+            raise OutOfStock(f"Out of stock for sku {line.sku}")
+
+
 @dataclass(eq=False)
 class OrderLine:
     order_id: str
