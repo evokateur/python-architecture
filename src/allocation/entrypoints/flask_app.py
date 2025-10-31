@@ -1,14 +1,10 @@
 from flask import Flask, request, jsonify
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 
-from allocation import config
 from allocation.adapters import orm
-from allocation.adapters import repository
 from allocation.service_layer import services
+from allocation.service_layer.unit_of_work import SqlAlchemyUnitOfWork
 
 orm.start_mappers()
-get_session = sessionmaker(bind=create_engine(config.get_postgres_uri()))
 app = Flask(__name__)
 
 
@@ -18,23 +14,21 @@ def is_valid_sku(sku, batches):
 
 @app.route("/batches", methods=["POST"])
 def post_batch_endpoint():
-    session = get_session()
-    repo = repository.SqlAlchemyRepository(session)
+    uow = SqlAlchemyUnitOfWork()
 
     reference = request.json["reference"]
     sku = request.json["sku"]
     quantity = int(request.json["quantity"])
     eta = request.json.get("eta") or None
 
-    services.add_batch(reference, sku, quantity, eta, repo, session)
+    services.add_batch(reference, sku, quantity, eta, uow)
 
     return "OK", 201
 
 
 @app.route("/allocations", methods=["POST"])
 def allocate_endpoint():
-    session = get_session()
-    repo = repository.SqlAlchemyRepository(session)
+    uow = SqlAlchemyUnitOfWork()
 
     order_id, sku, quantity = (
         request.json["order_id"],
@@ -43,7 +37,7 @@ def allocate_endpoint():
     )
 
     try:
-        batch_ref = services.allocate(order_id, sku, quantity, repo, session)
+        batch_ref = services.allocate(order_id, sku, quantity, uow)
     except (services.OutOfStock, services.InvalidSku) as e:
         return jsonify({"message": str(e)}), 400
 
@@ -52,8 +46,7 @@ def allocate_endpoint():
 
 @app.route("/allocations", methods=["DELETE"])
 def deallocate_endpoint():
-    session = get_session()
-    repo = repository.SqlAlchemyRepository(session)
+    uow = SqlAlchemyUnitOfWork()
 
     order_id, sku, quantity = (
         request.json["order_id"],
@@ -62,7 +55,7 @@ def deallocate_endpoint():
     )
 
     try:
-        batch_ref = services.deallocate(order_id, sku, quantity, repo, session)
+        services.deallocate(order_id, sku, quantity, uow)
     except services.DeallocationError as e:
         return jsonify({"message": str(e)}), 400
 
